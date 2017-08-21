@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Game Development Tutorial</title>
+
+
+</head>
+<body>
+
+  <canvas id="canvas"></canvas>
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="./js/controls.js"></script>
+  <script src="./js/utility.js"></script>
+  <script src="./js/canvas.js"></script>
+  <script src="./js/animate.js"></script>
+  <script src="./js/spritesheet.js"></script>
+  <script src="./js/sprite.js"></script>
+  <script src="./js/world.js"></script>
+  <script src="./js/points.js"></script>
+  <script src="./js/segment.js"></script>
+  <script src="./js/collisions.js"></script>
+  <script language="javascript">
+
+    //var context = null;
+    block_w = 32;
+    block_h = 32;
+
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+
+    var wall = new Sprite('./images/wall.png',false);
+    var water = new Sprite('./images/water.png',false);
+
+    var guy = new Sprite('./images/guy.png');
+    var girl = new Sprite('./images/girl.png');
+    var blueGuy = new Sprite('./images/blueGuy.png');
+    var explosion = new Sprite('./images/explosion.png');
+    var bird = new Sprite('./images/bird.png');
+
+    //var spritesheet = new Spritesheet('./images/guy.png');
+    //var guy2 = new Sprite(spritesheet);
+
+    var guy_x = 0;
+    var guy_y = 256;
+
+    var jumpMax = 2;
+    var jumping_available = true;
+
+
+    $(document).ready(function() {
+
+      canvas.width = 640;
+      canvas.height = 480;
+
+      initializeKeyboard();
+
+      disableScrollBar();
+
+      initializeAnimationCounters();
+
+      var map = [
+                  [ 1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,0,1,1,1,
+                    1,1,1,1,1,0,0,1,1,1,
+                    1,1,1,1,0,0,0,1,1,1,
+                    1,1,0,0,0,0,0,1,1,1,
+                    0,0,0,0,0,0,0,0,0,0
+                  ],
+                  [ 1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,0,0,
+                    1,1,1,1,1,1,0,1,1,1,
+                    1,1,1,1,0,0,0,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,0,0,0,1,1,1,1,1,
+                    0,0,0,0,0,0,0,0,0,0
+                  ],
+                  [ 1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,0,
+                    1,1,1,1,1,1,0,0,1,1,
+                    1,1,1,0,0,1,1,1,1,1,
+                    0,0,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,0,1,1,1,
+                    1,1,1,1,1,0,0,1,1,1,
+                    1,1,1,1,0,0,0,1,1,1,
+                    1,1,0,0,0,0,0,1,1,1,
+                    0,0,0,0,0,0,0,0,0,0
+                  ],
+                  [ 1,1,1,1,1,1,1,1,1,1,
+                    0,0,0,0,0,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,0,0,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,0,
+                    1,1,1,1,1,0,1,1,1,1,
+                    1,1,1,1,0,0,1,1,1,0,
+                    1,1,0,0,0,0,0,0,0,0,
+                    0,0,0,0,0,0,0,0,0,0
+                  ],
+                  [ 1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    0,0,1,1,1,1,1,1,1,1,
+                    1,0,1,1,1,1,1,1,1,1,
+                    0,0,1,1,1,1,0,1,1,1,
+                    1,1,1,1,1,0,0,1,1,1,
+                    1,1,1,1,0,0,0,1,1,1,
+                    1,1,0,0,0,0,0,1,1,1,
+                    0,0,0,0,0,0,0,0,0,0
+                  ],
+                  [ 1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,0,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,0,1,1,0,1,1,1,
+                    1,1,0,0,0,1,0,1,1,1,
+                    1,1,1,1,1,1,0,1,1,1,
+                    1,1,1,1,1,0,0,1,1,1,
+                    1,1,1,1,0,0,0,1,1,1,
+                    1,1,0,0,0,0,0,1,1,1,
+                    0,0,0,0,0,0,0,0,0,0
+                  ],
+                  [ 1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,0,1,1,1,
+                    1,1,1,1,1,0,0,1,1,1,
+                    1,1,1,1,0,0,0,1,1,1,
+                    1,1,0,0,0,0,0,1,1,1,
+                    0,0,0,0,0,0,0,0,0,0
+                  ],
+                  [ 1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,1,1,1,1,
+                    1,1,1,1,1,1,0,1,1,1,
+                    1,1,1,1,1,0,0,1,1,1,
+                    1,1,1,1,0,0,0,1,1,1,
+                    1,1,0,0,0,0,0,1,1,1,
+                    0,0,0,0,0,0,0,0,0,0
+                  ],
+
+      ];
+
+      var currMap = 0;
+
+      var point = new Point(100,100);
+
+
+      setInterval(function() {
+
+        resetAnimationCounter();
+
+        if (guy.pos_x_in_map === 9) {
+          console.log('reached right corner');
+          currMap++;
+          guy_x = 0;
+        }
+        if (guy.pos_x_in_map <= -1) {
+          console.log('reached left corner');
+          currMap--;
+          guy_x = 285;
+        }
+
+        drawMap(map[currMap]);
+
+        point.draw(5,'red');
+
+        var spriteI = [12,13,14,15];
+
+
+        if (key.space) {
+          this.jump()
+
+          if (this.jumping) {
+            guy_y -= this.jumping_velocity;
+            this.jumping_velocity += 0.2;
+
+              if (this.jumping_velocity <= 0) {
+                this.jumping = false;
+              }
+
+          }
+        }
+
+        check_if_wall(map[currMap]);
+        //console.log(can_go_right);
+
+        if (key.leftArrow) {
+          spriteI = [8,9,10,11];
+          if(can_go_left) {
+            if (!is_shift) {
+              guy_x -= 1;
+            } else {
+              guy_x -= 2;
+            }
+          }
+        }
+        if (key.upArrow) {
+          spriteI = [4,5,6,7];
+          if(can_go_up) {
+            if (!is_shift) {
+              guy_y -= 1;
+            } else {
+              guy_y -= 2;
+            }
+          }
+        }
+        if (key.rightArrow) {
+          spriteI = [12,13,14,15];
+          if (can_go_right) {
+            if (!is_shift) {
+              guy_x += 1;
+            } else {
+              guy_x += 2;
+            }
+          }
+        }
+        if (key.downArrow) {
+          spriteI = [0,1,2,3];
+          if (can_go_down) {
+            if (!is_shift) {
+              guy_y += 1;
+            } else {
+              guy_y += 2;
+            }
+          }
+        }
+
+        //can_go_right = true;
+        //can_go_left = true;
+
+
+        guy.draw(guy_x,guy_y,spriteI);
+
+        /*girl.draw(64,64,[0,1,2,3]);
+        blueGuy.draw(96,96,[8,9,10,11]);
+        bird.draw(32,160,[0,1,2,3]);
+        explosion.draw(160,193,[0,1,2,3,4,5,6,7,8,9,10,11]);*/
+
+
+
+        //console.log(bird.pos_x_in_map, bird.pos_y_in_map);
+
+
+
+        //if(guy.pos_x)
+
+
+
+      }, 24);
+
+
+
+    });
+
+
+  </script>
+</body>
+</html>
