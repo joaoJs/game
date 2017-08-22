@@ -38,6 +38,7 @@ function initializeKeyboard() {
     if (e.keyCode === 32) {
       //jumping will be true
       key.space = true;
+      this.can_jump = false;
     }
 
     if (e.keyCode === key_left || e.keyCode === key_a) {
@@ -64,6 +65,8 @@ function initializeKeyboard() {
     if (e.keyCode === 32) {
       //jumping will be true
       key.space = false;
+      //can jump
+      guy.can_jump = true;
     }
 
     if (e.keyCode === key_left || e.keyCode === key_a) {
@@ -81,14 +84,5 @@ function initializeKeyboard() {
     }
 
   });
-
-}
-
-function jump() {
-
-  if (jumping_available) {
-    this.jumping = true;
-    this.jumping_velocity = jumpMax;
-  }
 
 }
