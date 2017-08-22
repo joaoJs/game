@@ -38,7 +38,6 @@ function initializeKeyboard() {
     if (e.keyCode === 32) {
       //jumping will be true
       key.space = true;
-      this.can_jump = false;
     }
 
     if (e.keyCode === key_left || e.keyCode === key_a) {
