@@ -68,7 +68,7 @@ function check_if_bird(x_next, y_next, map) {
         var diff_y = Math.abs(y_next - bird.pos_y);
         //console.log(diff_x, diff_y);
         if (diff_x <= 50 && diff_y <= 50) {
-          //console.log('touched bird!');
+          console.log('touched bird!');
         }
       });
     }

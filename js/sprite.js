@@ -143,14 +143,14 @@ function Sprite(filename, is_pattern, sprite_size,x,y) {
     if (guy.jumping_available) {
       guy.jumping_velocity = guy.jumpMax;
       guy_y -= guy.jumping_velocity;
-      console.log(guy.jumping_velocity);
+      //console.log(guy.jumping_velocity);
       if(guy.jumping_velocity <= 0) {
         guy.jumping_available = false;
         guy.jumpMax = 20;
       }
     }
     if (landed === true || (!can_go_down)) {
-      console.log('landed');
+      //console.log('landed');
       guy.jumpMax = 20;
       guy.jumping_available = true;
     }

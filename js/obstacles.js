@@ -259,8 +259,62 @@ function setObstacles(currMap) {
       if (bird11.go_down) {
         bird11.pos_y += 2;
       }
+    }
 
+    if (currMap === 6) {
+      bird12.draw(bird12.pos_x,bird12.pos_y,[0,1,2,3]);
+      if (bird12.pos_x === 6 * block_w && bird12.pos_y === 3 * block_h) {
+        bird12.go_left = true;
+        bird12.go_right = false;
+        bird12.go_up = false;
+        bird12.go_down = true;
+      }
+      if (bird12.pos_x === 2 * block_w && bird12.pos_y === 7 * block_h) {
+        bird12.go_left = false;
+        bird12.go_right = true;
+        bird12.go_up = true;
+        bird12.go_down = false;
+      }
+      if (bird12.go_right) {
+        bird12.pos_x += 2;
+      }
+      if (bird12.go_left) {
+        bird12.pos_x -= 4;
+      }
+      if (bird12.go_up) {
+        bird12.pos_y -= 2;
+      }
+      if (bird12.go_down) {
+        bird12.pos_y += 4;
+      }
+    }
 
+    if (currMap === 7) {
+      bird13.draw(bird13.pos_x,bird13.pos_y,[0,1,2,3]);
+      if (bird13.pos_x === 3 * block_w && bird13.pos_y === 4 * block_h) {
+        bird13.go_left = true;
+        bird13.go_right = false;
+        bird13.go_up = false;
+        bird13.go_down = true;
+      }
+      if (bird13.pos_x === 1 * block_w && bird13.pos_y === 6 * block_h) {
+        bird13.go_left = false;
+        bird13.go_right = true;
+        bird13.go_up = true;
+        bird13.go_down = false;
+      }
+      if (bird13.go_right) {
+        bird13.pos_x += 2;
+      }
+      if (bird13.go_left) {
+        bird13.pos_x -= 4;
+      }
+      if (bird13.go_up) {
+        bird13.pos_y -= 2;
+      }
+      if (bird13.go_down) {
+        bird13.pos_y += 4;
+      }
     }
 
 }
