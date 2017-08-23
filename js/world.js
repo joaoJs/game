@@ -3,6 +3,7 @@
     1 - background
     2 - top of floor
     3 - secret
+    4 - pizza
 */
 
 var map = [
@@ -83,7 +84,7 @@ var map = [
               1,2,0,0,0,0,0,2,1,1,
               1,0,0,0,0,0,0,0,1,1
             ],
-            [ 1,1,1,1,2,1,1,1,0,0,
+            [ 1,1,1,1,2,1,1,1,1,0,
               1,1,1,1,0,1,1,1,1,1,
               1,1,2,2,1,1,1,1,2,2,
               1,1,0,0,1,2,1,1,0,0,
@@ -138,7 +139,7 @@ function drawMap(map) {
         //orange_bottom.draw(tile_x,tile_y);
         back_brown_bottom.draw(tile_x,tile_y);
       } else if (tileType === 4) {
-        dungeon_wall.draw(tile_x,tile_y);
+        //pizza.draw(tile_x,tile_y);
       }
       i++;
       //name++;

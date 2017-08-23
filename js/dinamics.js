@@ -9,17 +9,29 @@ function initializeStatus() {
 
 function updateTime() {
 
+  if (time === 0) {
+    console.log('end');
+    $('.time').html('end');
+  } else {
+
     time--;
 
     var minutes = Math.floor(time / 60);
     var seconds = time % 60;
+    if (time === 0) {
+      $('.time').html('end');
+    } else {
 
-    if (seconds < 10) {
-      seconds = "0" + seconds;
+      if (seconds < 10) {
+        seconds = "0" + seconds;
+      }
+
+      var display_time = minutes + ':' + seconds;
+
+      $('.time').html(display_time);
+
     }
 
-    var display_time = minutes + ':' + seconds;
-
-    $('.time').html(display_time);
+  }
 
 }

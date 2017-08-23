@@ -68,10 +68,18 @@ function check_if_bird(x_next, y_next, map) {
         var diff_x = Math.abs(x_next - bird.pos_x);
         var diff_y = Math.abs(y_next - bird.pos_y);
         //console.log(diff_x, diff_y);
-        if (diff_x <= 50 && diff_y <= 50) {
+        if (diff_x <= 30 && diff_y <= 30) {
           console.log('touched bird!');
-          guy.lives--;
-          $('.lives').html(guy.lives);
+
+          var now = Date.now();
+          // wait half second for next collision
+          if (guy.lastCollision && now - guy.lastCollision < 500) {
+            console.log('wait');
+          } else {
+            guy.lastCollision = now;
+            guy.lives--;
+            $('.lives').html(guy.lives);
+          }
         }
       });
     }
@@ -87,10 +95,17 @@ function check_if_fireball(x_next, y_next, map) {
         var diff_x = Math.abs(x_next - fireball.pos_x);
         var diff_y = Math.abs(y_next - fireball.pos_y);
         //console.log(diff_x, diff_y);
-        if (diff_x <= 50 && diff_y <= 50) {
+        if (diff_x <= 30 && diff_y <= 30) {
           console.log('touched fireball!');
-          guy.lives--;
-          $('.lives').html(guy.lives);
+          var now = Date.now();
+          // wait half second for next collision
+          if (guy.lastCollision && now - guy.lastCollision < 500) {
+            console.log('wait');
+          } else {
+            guy.lastCollision = now;
+            guy.lives--;
+            $('.lives').html(guy.lives);
+          }
         }
       });
     }

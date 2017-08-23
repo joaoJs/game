@@ -2,6 +2,16 @@
   background: rgba(56,12,120,.8);
 }
 
+.underCanvas {
+  width: 640px;
+  height: 640px;
+  background: url('../images/back_brown.png');
+  margin: 0 auto;
+  position: relative;
+  top:150px;
+  border-radius: 50px;
+}
+
 .canvasWrapper {
   background: rgba(165,185,225,.6);
   text-align: center;
@@ -11,7 +21,7 @@
   border-radius: 40%;
   box-shadow: 10px 10px 10px rgba(28,6,60,1);
   position: relative;
-  top: 50px;
+  bottom: 590px;
 }
 
 #canvas {

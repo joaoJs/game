@@ -11,10 +11,11 @@
 </head>
 <body id="body">
 
+  <div class="underCanvas"></div>
   <div class="canvasWrapper">
     <canvas id="canvas"></canvas>
     <div class="info">
-      <div class="lives">4</div>
+      <div class="lives">5</div>
       <div class="time">2:00</div>
       <div class="points">0</div>
     </div>
@@ -63,6 +64,7 @@
     var back_brown = new Sprite('./images/back_brown.png',false);
     var back_brown_bottom = new Sprite('./images/back_brown_bottom.png',false);
     var stones = new Sprite('./images/stones.png',false);
+    var pizza = new Sprite('./images/pizza.gif',false);
 
     //var guy = new Sprite('./images/guy.png');
     var guy = new Sprite('./images/blueGuy.png',false,4);
@@ -168,7 +170,7 @@
 
       initializeKeyboard();
 
-      disableScrollBar();
+      //disableScrollBar();
 
       initializeAnimationCounters();
 
@@ -182,6 +184,8 @@
       }, 1000);
 
       setInterval(function() {
+
+
 
         resetAnimationCounter();
 

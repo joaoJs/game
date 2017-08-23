@@ -29,8 +29,11 @@ function Sprite(filename, is_pattern, sprite_size,x,y) {
   this.switcher = 0;
 
   //properties for the initial status of the game
-  this.lives = 4;
+  this.lives = 5;
   this.points = 0;
+
+  //property to check collision times
+  this.lastCollision = null;
 
 
   /*
