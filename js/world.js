@@ -1,6 +1,6 @@
 /*
-    0 - blueFloor
-    1 - brownBackground
+    0 - floor
+    1 - background
     2 - top of floor
     3 - secret
 */
@@ -68,9 +68,9 @@ var map = [
               1,0,0,0,1,1,0,1,1,1,
               1,1,1,1,1,2,0,1,1,1,
               1,1,1,1,2,0,0,1,1,1,
-              1,1,2,2,0,3,3,1,1,1,
-              2,2,0,3,3,3,0,2,2,2,
-              0,0,0,0,0,0,0,0,0,0
+              1,1,2,2,0,0,0,1,1,1,
+              2,2,0,3,3,3,3,2,1,1,
+              0,0,0,0,0,0,0,0,1,1
             ],
             [ 1,1,1,1,1,1,1,1,1,1,
               1,1,1,1,1,1,1,1,1,1,
@@ -80,10 +80,10 @@ var map = [
               1,1,1,1,1,2,0,1,1,1,
               1,1,1,1,2,0,0,1,1,1,
               1,1,2,2,0,0,0,1,1,1,
-              2,2,0,0,0,0,0,2,1,1,
-              0,0,0,0,0,0,0,0,1,1
+              1,2,0,0,0,0,0,2,1,1,
+              1,0,0,0,0,0,0,0,1,1
             ],
-            [ 1,1,1,1,2,1,1,0,0,0,
+            [ 1,1,1,1,2,1,1,1,0,0,
               1,1,1,1,0,1,1,1,1,1,
               1,1,2,2,1,1,1,1,2,2,
               1,1,0,0,1,2,1,1,0,0,
@@ -94,6 +94,17 @@ var map = [
               1,0,0,0,0,0,1,1,1,1,
               1,0,0,0,0,0,1,1,1,1
             ],
+            [ 0,1,1,1,0,1,1,1,1,1,
+              0,1,2,2,0,1,1,1,1,1,
+              2,2,0,0,0,1,1,1,1,1,
+              0,0,0,1,1,1,1,1,1,1,
+              1,1,1,1,1,1,1,1,1,1,
+              1,1,1,1,1,1,1,1,1,1,
+              1,1,1,1,1,1,1,1,1,1,
+              1,1,1,1,1,1,1,1,1,1,
+              1,1,1,1,1,1,1,1,1,1,
+              1,1,1,1,1,1,1,1,1,1
+            ]
 
 ];
 
@@ -111,13 +122,23 @@ function drawMap(map) {
       var tileType = map[i];
 
       if (tileType === 0 || tileType === 3) {
-        water.draw(tile_x,tile_y);
+        //water.draw(tile_x,tile_y);
+        //dungeon_wall.draw(tile_x,tile_y);
+        stones.draw(tile_x,tile_y);
       } else if (tileType === 1) {
-        wall.draw(tile_x,tile_y);
+        //wall.draw(tile_x,tile_y);
+        //dungeon_wall.draw(tile_x,tile_y);
+        //wood.draw(tile_x,tile_y);
+        //orange.draw(tile_x,tile_y);
+        back_brown.draw(tile_x,tile_y);
       } else if (tileType === 2) {
-        /*points_obj[name] = new Point(tile_x, tile_y);
-        points_obj[name].draw(10,'yellow');*/
-        wall_bottom.draw(tile_x,tile_y);
+        //wall_bottom.draw(tile_x,tile_y);
+        //dungeon_bottom.draw(tile_x,tile_y);
+        //wood_bottom.draw(tile_x,tile_y);
+        //orange_bottom.draw(tile_x,tile_y);
+        back_brown_bottom.draw(tile_x,tile_y);
+      } else if (tileType === 4) {
+        dungeon_wall.draw(tile_x,tile_y);
       }
       i++;
       //name++;

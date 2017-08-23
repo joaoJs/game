@@ -59,6 +59,7 @@ function check_if_wall(map) {
 }
 
 function check_if_bird(x_next, y_next, map) {
+  // if there are any birds in current map
   //for each bird
     if (birds_per_map[map]) {
       birds_per_map[map].forEach(bird => {
@@ -69,9 +70,28 @@ function check_if_bird(x_next, y_next, map) {
         //console.log(diff_x, diff_y);
         if (diff_x <= 50 && diff_y <= 50) {
           console.log('touched bird!');
+          guy.lives--;
+          $('.lives').html(guy.lives);
         }
       });
     }
-  //if (x_next === )
+}
 
+function check_if_fireball(x_next, y_next, map) {
+  // if there are any birds in current map
+  //for each bird
+    if (fireballs_per_map[map]) {
+      fireballs_per_map[map].forEach(fireball => {
+        //console.log(x_next, y_next);
+        //console.log(bird.pos_x, bird.pos_y);
+        var diff_x = Math.abs(x_next - fireball.pos_x);
+        var diff_y = Math.abs(y_next - fireball.pos_y);
+        //console.log(diff_x, diff_y);
+        if (diff_x <= 50 && diff_y <= 50) {
+          console.log('touched fireball!');
+          guy.lives--;
+          $('.lives').html(guy.lives);
+        }
+      });
+    }
 }

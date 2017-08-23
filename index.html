@@ -5,12 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Game Development Tutorial</title>
-
+  <link rel="stylesheet" type="text/css" href="./css/styles.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 </head>
-<body>
+<body id="body">
 
-  <canvas id="canvas"></canvas>
+  <div class="canvasWrapper">
+    <canvas id="canvas"></canvas>
+    <div class="info">
+      <div class="lives">4</div>
+      <div class="time">2:00</div>
+      <div class="points">0</div>
+    </div>
+  </div>
 
 
 
@@ -27,6 +35,7 @@
   <script src="./js/points.js"></script>
   <script src="./js/segment.js"></script>
   <script src="./js/collisions.js"></script>
+  <script src="./js/dinamics.js"></script>
   <script language="javascript">
 
     //var context = null;
@@ -35,6 +44,9 @@
     block_w = 64;
     block_h = 64;
 
+    //initial time
+    //var time = 120;
+
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
 
@@ -42,6 +54,15 @@
     var water = new Sprite('./images/water.png',false);
     var water_bottom = new Sprite('./images/waterBottom.png',false);
     var wall_bottom = new Sprite('./images/wall_bottom.png',false);
+    var dungeon_wall = new Sprite('./images/dungeon.png',false);
+    var dungeon_bottom = new Sprite('./images/dungeon_bottom.png',false);
+    var wood = new Sprite('./images/wood.png',false);
+    var wood_bottom = new Sprite('./images/wood_bottom.png',false);
+    var orange = new Sprite('./images/orange.png',false);
+    var orange_bottom = new Sprite('./images/orange_bottom.png',false);
+    var back_brown = new Sprite('./images/back_brown.png',false);
+    var back_brown_bottom = new Sprite('./images/back_brown_bottom.png',false);
+    var stones = new Sprite('./images/stones.png',false);
 
     //var guy = new Sprite('./images/guy.png');
     var guy = new Sprite('./images/blueGuy.png',false,4);
@@ -74,9 +95,13 @@
 
     //map6
     var bird12 = new Sprite('./images/bird.png',false,4,6*block_w,3*block_h);
+    var bird14 = new Sprite('./images/bird.png',false,4,6*block_w,2*block_h);
+    var bird16 = new Sprite('./images/bird.png',false,4,6*block_w,1*block_h);
+
 
     //map7
     var bird13 = new Sprite('./images/bird.png',false,4,3*block_w,4*block_h);
+    var bird15 = new Sprite('./images/bird.png',false,4,3*block_w,0*block_h);
 
 
     //fireballs
@@ -93,6 +118,17 @@
     //map 4
     var fireball5 = new Sprite('./images/fireball.png',false,8,9*block_w,2*block_h);
 
+    //map 5
+    var fireball6 = new Sprite('./images/fireball.png',false,8,1*block_w,5*block_h);
+    var fireball7 = new Sprite('./images/fireball.png',false,8,3*block_w,7*block_h);
+
+    //map 6
+    //var fireball8 = new Sprite('./images/fireball.png',false,8,3*block_w,7*block_h);
+
+    //map 7
+    var fireball9 = new Sprite('./images/fireball.png',false,8,7*block_w,0*block_h);
+    var fireball10 = new Sprite('./images/fireball.png',false,8,7*block_w,3*block_h);
+
     //var spritesheet = new Spritesheet('./images/guy.png');
     //var guy2 = new Sprite(spritesheet);
 
@@ -104,10 +140,19 @@
       2: [bird4,bird5],
       3: [bird6,bird7],
       4: [bird8,bird,9],
-      5: [bird10,bird11]
+      5: [bird10,bird11],
+      6: [bird12,bird14,bird16],
+      7: [bird13,bird15]
     };
 
-    //birds_array.push(bird);
+    var fireballs_per_map = {
+      1: [fireball],
+      2: [fireball2, fireball3],
+      3: [fireball4],
+      4: [fireball5],
+      5: [fireball6, fireball7],
+      7: [fireball9, fireball10]
+    };
 
     var guy_x = 0;
     var guy_y = 256;
@@ -118,8 +163,8 @@
 
     $(document).ready(function() {
 
-      canvas.width = 1280;
-      canvas.height = 1280;
+      canvas.width = 640;
+      canvas.height = 640;
 
       initializeKeyboard();
 
@@ -131,6 +176,10 @@
 
       var point = new Point(100,100);
 
+
+      setInterval(function() {
+          updateTime();
+      }, 1000);
 
       setInterval(function() {
 
@@ -159,6 +208,9 @@
             guy_x = 570;
           }
         }
+        if (currMap === 8 && guy.pos_y_in_map <=-2) {
+          console.log("outside!");
+        }
 
         drawMap(map[currMap]);
 
@@ -168,7 +220,7 @@
 
 
         if (key.space) {
-          if (can_go_up) {
+          if (can_go_up/* && !key.upArrow*/) {
 
               guy.jump()
               guy.jumpMax -= 0.5;
@@ -180,7 +232,7 @@
 
         check_if_wall(map[currMap]);
         check_if_bird(guy_x, guy_y,currMap);
-        //console.log(can_go_right);
+        check_if_fireball(guy_x, guy_y,currMap);
 
         if (key.leftArrow) {
           spriteI = [4,5,6,7];
@@ -224,29 +276,11 @@
           }
         }
 
-        //can_go_right = true;
-        //can_go_left = true;
-
-
         setObstacles(currMap);
         setFireBalls(currMap);
 
 
         guy.draw(guy_x,guy_y,spriteI);
-
-        /*girl.draw(64,64,[0,1,2,3]);
-        blueGuy.draw(96,96,[8,9,10,11]);
-        bird.draw(32,160,[0,1,2,3]);
-        explosion.draw(160,193,[0,1,2,3,4,5,6,7,8,9,10,11]);*/
-
-
-
-        //console.log(bird.pos_x_in_map, bird.pos_y_in_map);
-
-
-
-        //if(guy.pos_x)
-
 
 
       }, 24);

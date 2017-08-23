@@ -14,7 +14,7 @@ function Sprite(filename, is_pattern, sprite_size,x,y) {
   this.pos_y_in_map = Math.floor(this.pos_y / 64);
 
   this.gravity = 10;
-  this.jumpMax = 20;
+  this.jumpMax = 22;
   this.jumping = false;
   this.jumping_velocity = 0;
   this.jumping_available = true;
@@ -27,6 +27,11 @@ function Sprite(filename, is_pattern, sprite_size,x,y) {
   this.go_up = null;
   this.go_down = null;
   this.switcher = 0;
+
+  //properties for the initial status of the game
+  this.lives = 4;
+  this.points = 0;
+
 
   /*
   this.animationDelay = 0;
@@ -146,31 +151,14 @@ function Sprite(filename, is_pattern, sprite_size,x,y) {
       //console.log(guy.jumping_velocity);
       if(guy.jumping_velocity <= 0) {
         guy.jumping_available = false;
-        guy.jumpMax = 20;
+        guy.jumpMax = 22;
       }
     }
     if (landed === true || (!can_go_down)) {
       //console.log('landed');
-      guy.jumpMax = 20;
+      guy.jumpMax = 22;
       guy.jumping_available = true;
     }
-
-    /*if (this.jumping_available) {
-      //this.jumping = true;
-      this.jumping_velocity = this.jumpMax;
-      //if (this.jumping) {
-      while(this.jumping_velocity >= 0) {
-        guy_y -= this.jumping_velocity;
-        this.jumping_velocity -= 0.2;
-        console.log(this.jumping_velocity);
-      }
-
-          if (this.jumping_velocity <= 0) {
-            this.jumping = false;
-          }
-
-      }
-    //}*/
 
   };
 

@@ -1,0 +1,49 @@
+#body {
+  background: rgba(56,12,120,.8);
+}
+
+.canvasWrapper {
+  background: rgba(165,185,225,.6);
+  text-align: center;
+  width: 1640px;
+  height: 840px;
+  margin: 0 auto;
+  border-radius: 40%;
+  box-shadow: 10px 10px 10px rgba(28,6,60,1);
+  position: relative;
+  top: 50px;
+}
+
+#canvas {
+  border: 10px solid rgba(255,255,100,.7);
+  border-radius: 50px;
+  margin-top: 100px;
+}
+
+.info {
+  font-size: 40px;
+  position: relative;
+  bottom: 600px;
+}
+
+
+.lives,
+.time,
+.points {
+  display: inline-block;
+  color: rgb(255,255,50);
+  background: rgba(14,3,30,.4);
+  padding: 0 10px;
+  border-radius: 50px;
+  box-shadow: 2px 2px 5px rgba(255,255,100,.7);
+}
+
+.lives {
+  position: relative;
+  right: 170px;
+}
+
+.points {
+  position: relative;
+  left: 170px;
+}
