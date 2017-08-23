@@ -77,6 +77,7 @@ function check_if_bird(x_next, y_next, map) {
             console.log('wait');
           } else {
             guy.lastCollision = now;
+            bird_scream.play();
             guy.lives--;
             $('.lives').html(guy.lives);
             setTimeout(function(){
@@ -94,8 +95,6 @@ function check_if_fireball(x_next, y_next, map) {
   //for each bird
     if (fireballs_per_map[map]) {
       fireballs_per_map[map].forEach(fireball => {
-        //console.log(x_next, y_next);
-        //console.log(bird.pos_x, bird.pos_y);
         var diff_x = Math.abs(x_next - fireball.pos_x);
         var diff_y = Math.abs(y_next - fireball.pos_y);
         //console.log(diff_x, diff_y);
@@ -107,6 +106,7 @@ function check_if_fireball(x_next, y_next, map) {
             console.log('wait');
           } else {
             guy.lastCollision = now;
+            fire.play();
             guy.lives--;
             $('.lives').html(guy.lives);
             setTimeout(function(){
@@ -124,11 +124,8 @@ function check_if_coin(x_next, y_next, map) {
   //for each bird
     if (coins_per_map[map]) {
       coins_per_map[map].forEach(coin => {
-        //console.log(x_next, y_next);
-        //console.log(bird.pos_x, bird.pos_y);
         var diff_x = Math.abs(x_next - coin.pos_x);
         var diff_y = Math.abs(y_next - coin.pos_y);
-        //console.log(diff_x, diff_y);
         if (diff_x <= 30 && diff_y <= 30) {
           console.log('touched coin!');
           console.log(coin.pos_x_in_map,coin.pos_y_in_map);
@@ -141,6 +138,14 @@ function check_if_coin(x_next, y_next, map) {
             // make coins dissapear;
             coin.draw(-500,-500,[1,2,3,4]);
             guy.lastCollision_coin = now;
+            point_sounds.play();
+            var soud_time = Date.now();
+            if(guy.lastPoint && now - guy.lastPoint < 900) {
+              point_sounds2.play();
+            } else {
+              guy.lastPoint = now;
+            }
+            console.log(point_sounds);
             guy.points++;
             $('.points').html(guy.points);
             setTimeout(function(){
@@ -158,11 +163,8 @@ function check_if_life(x_next, y_next, map) {
   //for each bird
     if (lives_per_map[map]) {
       lives_per_map[map].forEach(life => {
-        //console.log(x_next, y_next);
-        //console.log(bird.pos_x, bird.pos_y);
         var diff_x = Math.abs(x_next - life.pos_x);
         var diff_y = Math.abs(y_next - life.pos_y);
-        //console.log(diff_x, diff_y);
         if (diff_x <= 30 && diff_y <= 30) {
           console.log('touched life!');
 
@@ -174,6 +176,7 @@ function check_if_life(x_next, y_next, map) {
             // make coins dissapear;
             life.draw(-500,-500,[1,2,3,4]);
             guy.lastCollision = now;
+            point_sounds.play();
             guy.points += 2;
             guy.lives++;
             $('.points').html(guy.points);

@@ -36,6 +36,9 @@ function Sprite(filename, is_pattern, sprite_size,x,y) {
   this.lastCollision = null;
   this.lastCollision_coin = null;
 
+  //property to keep track of point sound
+  this.lastPoint = null;
+
   /*
   this.animationDelay = 0;
   this.animationIndexCounter = 0;

@@ -53,6 +53,18 @@
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
 
+    //audios
+    var bird_scream = new Audio('./sounds/bird_scream.wav');
+    var fire = new Audio('./sounds/fire.wav');
+    var point_sounds = new Audio('./sounds/points.wav');
+    var point_sounds2 = new Audio('./sounds/points.wav');
+    var point_sounds3 = new Audio('./sounds/points.wav');
+    var serenade = new Audio('./sounds/serenade.mp3');
+
+
+    //serenade.play();
+
+
     var wall = new Sprite('./images/wall.png',false);
     var water = new Sprite('./images/water.png',false);
     var water_bottom = new Sprite('./images/waterBottom.png',false);
