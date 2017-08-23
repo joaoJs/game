@@ -47,7 +47,7 @@ function setFireBalls(currMap) {
     }
 
     fireball7.draw(fireball7.pos_x,fireball7.pos_y,[16,17,18,19,20,21,22,23]);
-    fireball7.pos_y -= 3;
+    fireball7.pos_y -= 2;
     if (fireball7.pos_y <= 5 * block_h) {
       fireball7.pos_y = 7 * block_w;
     }
@@ -60,14 +60,14 @@ function setFireBalls(currMap) {
   if (currMap === 7) {
     fireball9.draw(fireball9.pos_x,fireball9.pos_y,[48,49,50,51,52,53,54,55]);
     fireball9.pos_y += 3;
-    if (fireball9.pos_y >= 3 * block_h) {
+    if (fireball9.pos_y >= 4 * block_h) {
       fireball9.pos_y = 0 * block_w;
     }
 
     fireball10.draw(fireball10.pos_x,fireball10.pos_y,[16,17,18,19,20,21,22,23]);
     fireball10.pos_y -= 3;
     if (fireball10.pos_y <= 0 * block_h) {
-      fireball10.pos_y = 3 * block_w;
+      fireball10.pos_y = 4 * block_w;
     }
   }
 

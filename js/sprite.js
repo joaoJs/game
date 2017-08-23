@@ -34,7 +34,7 @@ function Sprite(filename, is_pattern, sprite_size,x,y) {
 
   //property to check collision times
   this.lastCollision = null;
-
+  this.lastCollision_coin = null;
 
   /*
   this.animationDelay = 0;

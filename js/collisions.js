@@ -30,27 +30,27 @@ function check_if_wall(map) {
   var index_gravity2 = xy2i(x_left,y_gravity,10);
 
   //console.log(index);
-  if ((map[index_right+1] === 0 || map[index_right2+1] === 0)&& guy.pos_x_in_map !== 9) {
+  if ((map[index_right+1] === 0 || map[index_right2+1] === 0) || (map[index_right+1] === 5 || map[index_right2+1] === 5) && guy.pos_x_in_map !== 9) {
     can_go_right = false;
   } else {
     can_go_right = true;
   }
-  if ((map[index_left-1] === 0 || map[index_left2-1] === 0) && guy.pos_x_in_map !== 0) {
+  if ((map[index_left-1] === 0 || map[index_left2-1] === 0) || (map[index_left-1] === 5 || map[index_left2-1] === 5) && guy.pos_x_in_map !== 0) {
     can_go_left = false;
   } else {
     can_go_left = true;
   }
-  if (map[index_down+10] === 0 || map[index_down2+10] === 0) {
+  if ((map[index_down+10] === 0 || map[index_down2+10] === 0) || (map[index_down+10] === 5 || map[index_down2+10] === 5)) {
     can_go_down = false;
   } else {
     can_go_down = true;
   }
-  if (map[index_up-10] === 0 || map[index_up2-10] === 0) {
+  if ((map[index_up-10] === 0 || map[index_up2-10] === 0) || (map[index_up-10] === 5 || map[index_up2-10] === 5)) {
     can_go_up = false;
   } else {
     can_go_up = true;
   }
-  if (map[index_gravity+10] === 0 || map[index_gravity2+10] === 0) {
+  if ((map[index_gravity+10] === 0 || map[index_gravity2+10] === 0) || (map[index_gravity+10] === 5 || map[index_gravity2+10] === 5)) {
     landed = true;
   } else {
     landed = false;
@@ -79,6 +79,10 @@ function check_if_bird(x_next, y_next, map) {
             guy.lastCollision = now;
             guy.lives--;
             $('.lives').html(guy.lives);
+            setTimeout(function(){
+              $('#canvas').toggleClass('active_damage');
+            }, 200);
+            $('#canvas').toggleClass('active_damage');
           }
         }
       });
@@ -105,6 +109,79 @@ function check_if_fireball(x_next, y_next, map) {
             guy.lastCollision = now;
             guy.lives--;
             $('.lives').html(guy.lives);
+            setTimeout(function(){
+              $('#canvas').toggleClass('active_damage');
+            }, 200);
+            $('#canvas').toggleClass('active_damage');
+          }
+        }
+      });
+    }
+}
+
+function check_if_coin(x_next, y_next, map) {
+  // if there are any birds in current map
+  //for each bird
+    if (coins_per_map[map]) {
+      coins_per_map[map].forEach(coin => {
+        //console.log(x_next, y_next);
+        //console.log(bird.pos_x, bird.pos_y);
+        var diff_x = Math.abs(x_next - coin.pos_x);
+        var diff_y = Math.abs(y_next - coin.pos_y);
+        //console.log(diff_x, diff_y);
+        if (diff_x <= 30 && diff_y <= 30) {
+          console.log('touched coin!');
+          console.log(coin.pos_x_in_map,coin.pos_y_in_map);
+
+          var now = Date.now();
+          // wait half second for next collision
+          if (guy.lastCollision_coin && now - guy.lastCollision_coin < 300) {
+            //console.log('wait');
+          } else {
+            // make coins dissapear;
+            coin.draw(-500,-500,[1,2,3,4]);
+            guy.lastCollision_coin = now;
+            guy.points++;
+            $('.points').html(guy.points);
+            setTimeout(function(){
+              $('#canvas').toggleClass('active');
+            }, 200);
+            $('#canvas').toggleClass('active');
+          }
+        }
+      });
+    }
+}
+
+function check_if_life(x_next, y_next, map) {
+  // if there are any birds in current map
+  //for each bird
+    if (lives_per_map[map]) {
+      lives_per_map[map].forEach(life => {
+        //console.log(x_next, y_next);
+        //console.log(bird.pos_x, bird.pos_y);
+        var diff_x = Math.abs(x_next - life.pos_x);
+        var diff_y = Math.abs(y_next - life.pos_y);
+        //console.log(diff_x, diff_y);
+        if (diff_x <= 30 && diff_y <= 30) {
+          console.log('touched life!');
+
+          var now = Date.now();
+          // wait half second for next collision
+          if (guy.lastCollision && now - guy.lastCollision < 300) {
+            //console.log('wait');
+          } else {
+            // make coins dissapear;
+            life.draw(-500,-500,[1,2,3,4]);
+            guy.lastCollision = now;
+            guy.points += 2;
+            guy.lives++;
+            $('.points').html(guy.points);
+            $('.lives').html(guy.lives);
+            setTimeout(function(){
+              $('#canvas').toggleClass('active_life');
+            }, 200);
+            $('#canvas').toggleClass('active_life');
           }
         }
       });

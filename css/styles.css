@@ -1,5 +1,6 @@
 #body {
-  background: rgba(56,12,120,.8);
+  /*background: rgba(56,12,120,.8);*/
+  background: rgba(165,185,225,.6);
 }
 
 .underCanvas {
@@ -13,7 +14,8 @@
 }
 
 .canvasWrapper {
-  background: rgba(165,185,225,.6);
+  /*background: rgba(165,185,225,.6);*/
+  background: rgba(56,25,120,.8);
   text-align: center;
   width: 1640px;
   height: 840px;
@@ -24,10 +26,44 @@
   bottom: 590px;
 }
 
+@keyframes coins {
+    from {box-shadow: 0px 0px 150px rgba(255,255,100,.7);}
+    to {box-shadow: 0px 0px 20px rgba(255,255,100,.7);}
+}
+
+@keyframes damage {
+    from {box-shadow: 0px 0px 150px rgba(255,100,150,.7);}
+    to {box-shadow: 0px 0px 20px rgba(255,255,100,.7);}
+}
+
+@keyframes life {
+    from {box-shadow: 0px 0px 250px rgba(120,255,150,.8);}
+    to {box-shadow: 0px 0px 20px rgba(255,255,100,.7);}
+}
+
 #canvas {
-  border: 10px solid rgba(255,255,100,.7);
+  border: 10px solid rgba(255,255,80,.8);
   border-radius: 50px;
   margin-top: 100px;
+}
+
+.normal {
+  box-shadow: 0px 0px 20px rgba(255,255,100,.7);
+}
+
+.active {
+  animation-name: coins;
+  animation-duration: 1s;
+}
+
+.active_damage {
+  animation-name: damage;
+  animation-duration: 1s;
+}
+
+.active_life {
+  animation-name: life;
+  animation-duration: 2s;
 }
 
 .info {

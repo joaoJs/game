@@ -13,7 +13,7 @@
 
   <div class="underCanvas"></div>
   <div class="canvasWrapper">
-    <canvas id="canvas"></canvas>
+    <canvas id="canvas" class="normal"></canvas>
     <div class="info">
       <div class="lives">5</div>
       <div class="time">2:00</div>
@@ -31,6 +31,8 @@
   <script src="./js/spritesheet.js"></script>
   <script src="./js/sprite.js"></script>
   <script src="./js/world.js"></script>
+  <script src="./js/coins.js"></script>
+  <script src="./js/life.js"></script>
   <script src="./js/obstacles.js"></script>
   <script src="./js/fireballs.js"></script>
   <script src="./js/points.js"></script>
@@ -64,14 +66,13 @@
     var back_brown = new Sprite('./images/back_brown.png',false);
     var back_brown_bottom = new Sprite('./images/back_brown_bottom.png',false);
     var stones = new Sprite('./images/stones.png',false);
-    var pizza = new Sprite('./images/pizza.gif',false);
+    var yellow = new Sprite('./images/yellow.png',false);
 
     //var guy = new Sprite('./images/guy.png');
     var guy = new Sprite('./images/blueGuy.png',false,4);
     var girl = new Sprite('./images/girl.png');
     var blueGuy = new Sprite('./images/blueGuy.png');
     var explosion = new Sprite('./images/explosion.png',false,4);
-
 
     //birds
     //map 0
@@ -129,10 +130,54 @@
 
     //map 7
     var fireball9 = new Sprite('./images/fireball.png',false,8,7*block_w,0*block_h);
-    var fireball10 = new Sprite('./images/fireball.png',false,8,7*block_w,3*block_h);
+    var fireball10 = new Sprite('./images/fireball.png',false,8,7*block_w,4*block_h);
 
-    //var spritesheet = new Spritesheet('./images/guy.png');
-    //var guy2 = new Sprite(spritesheet);
+
+    // coins
+
+    //map 0
+    var coin = new Sprite('./images/Coins2.png',false,8,9*block_w,2*block_h);
+    var coin2 = new Sprite('./images/Coins2.png',false,8,1*block_w,2*block_h);
+
+    //map 1
+    var coin3 = new Sprite('./images/Coins2.png',false,8,5*block_w,2*block_h);
+    var coin4 = new Sprite('./images/Coins2.png',false,8,9*block_w,6*block_h);
+    var coin5 = new Sprite('./images/Coins2.png',false,8,2*block_w,2*block_h);
+
+    //map 2
+    var coin6 = new Sprite('./images/Coins2.png',false,8,3*block_w,7*block_h);
+    var coin7 = new Sprite('./images/Coins2.png',false,8,7*block_w,7*block_h);
+    var coin8 = new Sprite('./images/Coins2.png',false,8,9*block_w,0*block_h);
+
+    //map 3
+    var coin9 = new Sprite('./images/Coins2.png',false,8,2*block_w,0*block_h);
+    var coin10 = new Sprite('./images/Coins2.png',false,8,3*block_w,0*block_h);
+    var coin11 = new Sprite('./images/Coins2.png',false,8,4*block_w,0*block_h);
+    var coin12 = new Sprite('./images/Coins2.png',false,8,3*block_w,6*block_h);
+
+    // map 4
+    var coin13 = new Sprite('./images/Coins2.png',false,8,0*block_w,4*block_h);
+    var coin14 = new Sprite('./images/Coins2.png',false,8,4*block_w,6*block_h);
+    var coin15 = new Sprite('./images/Coins2.png',false,8,9*block_w,1*block_h);
+
+    //map 5
+    var coin16 = new Sprite('./images/Coins2.png',false,8,2*block_w,7*block_h);
+    var coin17 = new Sprite('./images/Coins2.png',false,8,4*block_w,0*block_h);
+    var coin18 = new Sprite('./images/Coins2.png',false,8,7*block_w,8*block_h);
+
+    //map 6
+    var coin19 = new Sprite('./images/Coins2.png',false,8,5*block_w,2*block_h);
+    var coin20 = new Sprite('./images/Coins2.png',false,8,9*block_w,1*block_h);
+
+    // map 7
+    var coin21 = new Sprite('./images/Coins2.png',false,8,4*block_w,0*block_h);
+    var coin22 = new Sprite('./images/Coins2.png',false,8,5*block_w,3*block_h);
+    var coin23 = new Sprite('./images/Coins2.png',false,8,8*block_w,2*block_h);
+    var coin24 = new Sprite('./images/Coins2.png',false,8,9*block_w,2*block_h);
+
+
+    //var ring for life in map 4
+    var life = new Sprite('./images/rings.png',false,10,5*block_w,8*block_h);
 
     //var birds_array = [bird];
 
@@ -156,6 +201,21 @@
       7: [fireball9, fireball10]
     };
 
+    var coins_per_map = {
+      0: [coin,coin2],
+      1: [coin3,coin4,coin5],
+      2: [coin6,coin7,coin8],
+      3: [coin9,coin10,coin11,coin12],
+      4: [coin13,coin14,coin15],
+      5: [coin16,coin17,coin18],
+      6: [coin19,coin20],
+      7: [coin21,coin22,coin23,coin24]
+    };
+
+    var lives_per_map = {
+      5: [life]
+    };
+
     var guy_x = 0;
     var guy_y = 256;
 
@@ -170,7 +230,7 @@
 
       initializeKeyboard();
 
-      //disableScrollBar();
+      disableScrollBar();
 
       initializeAnimationCounters();
 
@@ -197,6 +257,7 @@
           console.log('reached right corner');
           currMap++;
           guy_x = 0;
+          guy_y -=10;
         }
         if (guy.pos_x_in_map <= -1) {
           console.log('reached left corner');
@@ -210,10 +271,15 @@
           } else {
             currMap--;
             guy_x = 570;
+            guy_y -=10;
           }
         }
         if (currMap === 8 && guy.pos_y_in_map <=-2) {
-          console.log("outside!");
+          if (guy.points >= 20) {
+            currMap++;
+          } else {
+            console.log('not enough poits');
+          }
         }
 
         drawMap(map[currMap]);
@@ -237,6 +303,8 @@
         check_if_wall(map[currMap]);
         check_if_bird(guy_x, guy_y,currMap);
         check_if_fireball(guy_x, guy_y,currMap);
+        check_if_coin(guy_x,guy_y,currMap);
+        check_if_life(guy_x,guy_y,currMap);
 
         if (key.leftArrow) {
           spriteI = [4,5,6,7];
@@ -282,7 +350,9 @@
 
         setObstacles(currMap);
         setFireBalls(currMap);
-
+        setCoins(currMap);
+        set_life(currMap)
+;
 
         guy.draw(guy_x,guy_y,spriteI);
 
