@@ -3,27 +3,17 @@
   background: rgba(165,185,225,.6);
 }
 
-.underCanvas {
-  width: 640px;
-  height: 640px;
-  background: url('../images/back_brown.png');
-  margin: 0 auto;
-  position: relative;
-  top:150px;
-  border-radius: 50px;
-}
-
 .canvasWrapper {
   /*background: rgba(165,185,225,.6);*/
   background: rgba(56,25,120,.8);
   text-align: center;
-  width: 1640px;
-  height: 840px;
+  width: 80%;/*1640px;*/
+  height: 740px;
   margin: 0 auto;
   border-radius: 40%;
   box-shadow: 10px 10px 10px rgba(28,6,60,1);
-  position: relative;
-  bottom: 590px;
+  /*position: relative;
+  top: 50px;*/
 }
 
 @keyframes coins {
@@ -44,7 +34,7 @@
 #canvas {
   border: 10px solid rgba(255,255,80,.8);
   border-radius: 50px;
-  margin-top: 100px;
+  margin-top: 40px;
 }
 
 .normal {
@@ -92,4 +82,34 @@
 .points {
   position: relative;
   left: 170px;
+}
+
+.end {
+  color: rgba(255,255,50,0);
+}
+
+.gameOver {
+  font-family: 'Sedgwick Ave Display', cursive;
+  font-size: 80px;
+  color: yellow;
+  position: relative;
+  bottom: 500px;
+}
+
+.playAgain {
+  background: rgba(56,12,120,1);
+  font-size: 46px;
+}
+
+.opening {
+  /*font-family: 'Sedgwick Ave', cursive;*/
+  font-size: 80px;
+  color: rgb(255,250,50);
+  position: relative;
+  bottom: 500px;
+}
+
+.newGame {
+  background: rgba(56,12,120,1);
+  border-radius: 50px;
 }

@@ -53,9 +53,6 @@ function setFireBalls(currMap) {
     }
   }
 
-  //if (currMap === 6) {
-
-  //}
 
   if (currMap === 7) {
     fireball9.draw(fireball9.pos_x,fireball9.pos_y,[48,49,50,51,52,53,54,55]);

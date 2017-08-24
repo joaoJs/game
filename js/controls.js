@@ -22,7 +22,7 @@ var key_space = 32;
 
 
 var is_shift = false; // shift is 16
-//var kstate = [false,false,false,false];
+
 window.kstate = null;
 
 
@@ -41,7 +41,7 @@ function initializeKeyboard() {
     }
 
     if (e.keyCode === key_left || e.keyCode === key_a) {
-        //kstate[0] = true;
+
         key.leftArrow = true;
     }
     if (e.keyCode === key_up || e.keyCode === key_w) {
@@ -62,14 +62,14 @@ function initializeKeyboard() {
       is_shift = false;
     }
     if (e.keyCode === 32) {
-      //jumping will be true
+
       key.space = false;
-      //can jump
+
       guy.can_jump = true;
     }
 
     if (e.keyCode === key_left || e.keyCode === key_a) {
-        //kstate[0] = false;
+        
         key.leftArrow = false;
     }
     if (e.keyCode === key_up || e.keyCode === key_w) {

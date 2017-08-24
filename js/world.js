@@ -123,7 +123,6 @@ var map = [
 function drawMap(map) {
 
   var i = 0;
-  //var name = 0;
 
   for (var y = 0; y < 10; y++) {
     for (var x = 0; x < 10; x++) {
@@ -133,26 +132,15 @@ function drawMap(map) {
       var tileType = map[i];
 
       if (tileType === 0 || tileType === 3) {
-        //water.draw(tile_x,tile_y);
-        //dungeon_wall.draw(tile_x,tile_y);
         stones.draw(tile_x,tile_y);
       } else if (tileType === 1) {
-        //wall.draw(tile_x,tile_y);
-        //dungeon_wall.draw(tile_x,tile_y);
-        //wood.draw(tile_x,tile_y);
-        //orange.draw(tile_x,tile_y);
         back_brown.draw(tile_x,tile_y);
       } else if (tileType === 2) {
-        //wall_bottom.draw(tile_x,tile_y);
-        //dungeon_bottom.draw(tile_x,tile_y);
-        //wood_bottom.draw(tile_x,tile_y);
-        //orange_bottom.draw(tile_x,tile_y);
         back_brown_bottom.draw(tile_x,tile_y);
       } else if (tileType === 5) {
         yellow.draw(tile_x,tile_y);
       }
       i++;
-      //name++;
     }
   }
 

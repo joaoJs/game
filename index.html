@@ -7,18 +7,21 @@
   <title>Game Development Tutorial</title>
   <link rel="stylesheet" type="text/css" href="./css/styles.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Sedgwick+Ave" rel="stylesheet">
 
 </head>
 <body id="body">
 
-  <div class="underCanvas"></div>
+  <!--<div class="underCanvas"></div>-->
   <div class="canvasWrapper">
     <canvas id="canvas" class="normal"></canvas>
     <div class="info">
       <div class="lives">5</div>
-      <div class="time">2:00</div>
+      <div class="time">1:30</div>
       <div class="points">0</div>
     </div>
+    <div class="opening"><button class="newGame">New Game</button></div>
+    <div class="gameOver"></div>
   </div>
 
 
@@ -26,7 +29,6 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="./js/controls.js"></script>
   <script src="./js/utility.js"></script>
-  <script src="./js/canvas.js"></script>
   <script src="./js/animate.js"></script>
   <script src="./js/spritesheet.js"></script>
   <script src="./js/sprite.js"></script>
@@ -35,20 +37,12 @@
   <script src="./js/life.js"></script>
   <script src="./js/obstacles.js"></script>
   <script src="./js/fireballs.js"></script>
-  <script src="./js/points.js"></script>
-  <script src="./js/segment.js"></script>
   <script src="./js/collisions.js"></script>
   <script src="./js/dinamics.js"></script>
   <script language="javascript">
 
-    //var context = null;
-    //block_w = 32;
-    //block_h = 32;
     block_w = 64;
     block_h = 64;
-
-    //initial time
-    //var time = 120;
 
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
@@ -58,23 +52,9 @@
     var fire = new Audio('./sounds/fire.wav');
     var point_sounds = new Audio('./sounds/points.wav');
     var point_sounds2 = new Audio('./sounds/points.wav');
-    var point_sounds3 = new Audio('./sounds/points.wav');
-    var serenade = new Audio('./sounds/serenade.mp3');
+    var bach = new Audio('./sounds/bach.mp3');
 
 
-    //serenade.play();
-
-
-    var wall = new Sprite('./images/wall.png',false);
-    var water = new Sprite('./images/water.png',false);
-    var water_bottom = new Sprite('./images/waterBottom.png',false);
-    var wall_bottom = new Sprite('./images/wall_bottom.png',false);
-    var dungeon_wall = new Sprite('./images/dungeon.png',false);
-    var dungeon_bottom = new Sprite('./images/dungeon_bottom.png',false);
-    var wood = new Sprite('./images/wood.png',false);
-    var wood_bottom = new Sprite('./images/wood_bottom.png',false);
-    var orange = new Sprite('./images/orange.png',false);
-    var orange_bottom = new Sprite('./images/orange_bottom.png',false);
     var back_brown = new Sprite('./images/back_brown.png',false);
     var back_brown_bottom = new Sprite('./images/back_brown_bottom.png',false);
     var stones = new Sprite('./images/stones.png',false);
@@ -82,9 +62,6 @@
 
     //var guy = new Sprite('./images/guy.png');
     var guy = new Sprite('./images/blueGuy.png',false,4);
-    var girl = new Sprite('./images/girl.png');
-    var blueGuy = new Sprite('./images/blueGuy.png');
-    var explosion = new Sprite('./images/explosion.png',false,4);
 
     //birds
     //map 0
@@ -136,9 +113,6 @@
     //map 5
     var fireball6 = new Sprite('./images/fireball.png',false,8,1*block_w,5*block_h);
     var fireball7 = new Sprite('./images/fireball.png',false,8,3*block_w,7*block_h);
-
-    //map 6
-    //var fireball8 = new Sprite('./images/fireball.png',false,8,3*block_w,7*block_h);
 
     //map 7
     var fireball9 = new Sprite('./images/fireball.png',false,8,7*block_w,0*block_h);
@@ -231,11 +205,16 @@
     var guy_x = 0;
     var guy_y = 256;
 
-    //var jumpMax = 2;
-    //var jumping_available = true;
+    var game_loop = null;
+    var timer = null;
+
+    var currMap = null;
 
 
     $(document).ready(function() {
+
+      //var ring for life in map 4
+      var life = new Sprite('./images/rings.png',false,10,5*block_w,8*block_h);
 
       canvas.width = 640;
       canvas.height = 640;
@@ -246,130 +225,162 @@
 
       initializeAnimationCounters();
 
-      var currMap = 0;
+      currMap = 0;
 
-      var point = new Point(100,100);
+      $('.opening').click(function() {
+
+        bach.currentTime = 0;
+        bach.play();
+
+        $('.points').html(guy.points);
+        $('.lives').html(guy.lives);
+        $('.lives').removeClass('end');
+        $('.points').removeClass('end');
+        start_game();
+        $('.opening').hide();
+
+      });
 
 
-      setInterval(function() {
-          updateTime();
-      }, 1000);
+      function start_game() {
 
-      setInterval(function() {
+        timer = setInterval(function() {
+            updateTime();
+        }, 1000);
+
+        game_loop = setInterval(function() {
 
 
 
-        resetAnimationCounter();
+          resetAnimationCounter();
 
-        if(!landed) {
-          guy_y += guy.gravity;
-        }
-
-        if (guy.pos_x_in_map === 9) {
-          console.log('reached right corner');
-          currMap++;
-          guy_x = 0;
-          guy_y -=10;
-        }
-        if (guy.pos_x_in_map <= -1) {
-          console.log('reached left corner');
-          //check for 570, guy_y
-          var x_prev = Math.floor(570/64);
-          var y_prev = Math.floor(guy.pos_y/64);
-          var index_prev = xy2i(x_prev, y_prev,10);
-          if(map[currMap-1][index_prev] === 0) {
-            console.log("can't go left!");
-            guy_x = 0;
-          } else {
-            currMap--;
-            guy_x = 570;
-            guy_y -=10;
+          if(!landed) {
+            guy_y += guy.gravity;
           }
-        }
-        if (currMap === 8 && guy.pos_y_in_map <=-2) {
-          if (guy.points >= 20) {
-            currMap++;
-          } else {
-            console.log('not enough poits');
+
+          if (guy.pos_x_in_map === 9 && currMap !== 8) {
+              console.log('reached right corner');
+              currMap++;
+              guy_x = 0;
+              guy_y -=10;
           }
-        }
-
-        drawMap(map[currMap]);
-
-        //point.draw(5,'red');
-
-        var spriteI = [8,9,10,11];
-
-
-        if (key.space) {
-          if (can_go_up/* && !key.upArrow*/) {
-
-              guy.jump()
-              guy.jumpMax -= 0.5;
-
-          } else {
-            console.log("can't go up");
+          if (guy.pos_x_in_map <= -1 && currMap !== 0) {
+              console.log('reached left corner');
+              //check for 570, guy_y
+              var x_prev = Math.floor(570/64);
+              var y_prev = Math.floor(guy.pos_y/64);
+              var index_prev = xy2i(x_prev, y_prev,10);
+              if(map[currMap-1][index_prev] === 0) {
+                console.log("can't go left!");
+                guy_x = 0;
+              } else {
+                currMap--;
+                guy_x = 570;
+                guy_y -=10;
+              }
           }
-        }
+          if (currMap === 8 && guy.pos_y_in_map <=-2) {
+            if (guy.points >= 20) {
+              console.log('here!');
+              currMap++;
 
-        check_if_wall(map[currMap]);
-        check_if_bird(guy_x, guy_y,currMap);
-        check_if_fireball(guy_x, guy_y,currMap);
-        check_if_coin(guy_x,guy_y,currMap);
-        check_if_life(guy_x,guy_y,currMap);
+ // -----------> Play winning sound here
 
-        if (key.leftArrow) {
-          spriteI = [4,5,6,7];
-          if(can_go_left) {
-            if (!is_shift) {
-              guy_x -= 6;
             } else {
-              guy_x -= 6;
+              console.log('not enough poits');
             }
           }
-        }
-        if (key.upArrow) {
-          spriteI = [12,13,14,15];
-          if(can_go_up) {
-            if (!is_shift) {
-              guy_y -= 4;
-            } else {
-              guy_y -= 6;
+          if (currMap === 0 && guy.pos_x_in_map <= 0) {
+            if (key.leftArrow) {
+              guy_x = 0;
             }
           }
-        }
-        if (key.rightArrow) {
-          spriteI = [8,9,10,11];
-          if (can_go_right) {
-            //check_if_bird(guy_x + 6, guy_y,currMap);
-            if (!is_shift) {
-              guy_x += 6;
+
+  // ------> check if guy falls and dies
+
+          if (guy.pos_y_in_map >= 12) {
+
+            $('.gameOver').html('Game Over');
+            stop();
+
+          }
+
+
+          drawMap(map[currMap]);
+
+          var spriteI = [8,9,10,11];
+
+
+          if (key.space) {
+            if (can_go_up/* && !key.upArrow*/) {
+
+                guy.jump()
+                guy.jumpMax -= 0.5;
+
             } else {
-              guy_x += 6;
+              console.log("can't go up");
             }
           }
-        }
-        if (key.downArrow) {
-          spriteI = [0,1,2,3];
-          if (can_go_down) {
-            if (!is_shift) {
-              guy_y += 4;
-            } else {
-              guy_y += 6;
+
+          check_if_wall(map[currMap]);
+          check_if_bird(guy_x, guy_y,currMap);
+          check_if_fireball(guy_x, guy_y,currMap);
+          check_if_coin(guy_x,guy_y,currMap);
+          check_if_life(guy_x,guy_y,currMap);
+
+          if (key.leftArrow) {
+            spriteI = [4,5,6,7];
+            if(can_go_left) {
+              if (!is_shift) {
+                guy_x -= 6;
+              } else {
+                guy_x -= 6;
+              }
             }
           }
-        }
+          if (key.upArrow) {
+            spriteI = [12,13,14,15];
+            if(can_go_up) {
+              if (!is_shift) {
+                guy_y -= 4;
+              } else {
+                guy_y -= 6;
+              }
+            }
+          }
+          if (key.rightArrow) {
+            spriteI = [8,9,10,11];
+            if (can_go_right) {
+              if (!is_shift) {
+                guy_x += 6;
+              } else {
+                guy_x += 6;
+              }
+            }
+          }
+          if (key.downArrow) {
+            spriteI = [0,1,2,3];
+            if (can_go_down) {
+              if (!is_shift) {
+                guy_y += 4;
+              } else {
+                guy_y += 6;
+              }
+            }
+          }
 
-        setObstacles(currMap);
-        setFireBalls(currMap);
-        setCoins(currMap);
-        set_life(currMap)
-;
+          setObstacles(currMap);
+          setFireBalls(currMap);
+          setCoins(currMap);
+          set_life(currMap)
+  ;
 
-        guy.draw(guy_x,guy_y,spriteI);
+          guy.draw(guy_x,guy_y,spriteI);
 
 
-      }, 24);
+        }, 24);
+
+      }
 
 
 

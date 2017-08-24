@@ -39,12 +39,6 @@ function Sprite(filename, is_pattern, sprite_size,x,y) {
   //property to keep track of point sound
   this.lastPoint = null;
 
-  /*
-  this.animationDelay = 0;
-  this.animationIndexCounter = 0;
-  this.animationCurrentFrame = 0;
-  */
-
   //load from Spritesheet
   if (filename instanceof Spritesheet) {
       this.spritesheet = filename;
@@ -101,52 +95,6 @@ function Sprite(filename, is_pattern, sprite_size,x,y) {
 
   };
 
-  /*this.drawAnimated = function(x,y,spriteSheetIndex) {
-
-      if (this.animationDelay++ >= 3) {
-        this.animationDelay = 0;
-        this.animationIndexCounter++;
-        if (this.animationIndexCounter >= spriteSheetIndex.length) {
-          this.animationIndexCounter = 0;
-        }
-        this.animationCurrentFrame = spriteSheetIndex[this.animationIndexCounter];
-      }
-      var res = i2xy(this.animationCurrentFrame,4);
-      context.drawImage(this.image, res[0] * 32, res[1] * 32,32,32,x,y,32,32);
-
-  };*/
-
-  this.draw2 = function(x,y,w,h) {
-
-    if (this.pattern !== null) {
-      context.fillStyle = this.pattern;
-      context.fillRect(x,y,w,h);
-    } else {
-
-      // i guess it should be == undefined
-      if (w === undefined || h === undefined) {
-
-        context.drawImage(this.image,x,y,this.image.width,this.image.height);
-
-      } else {
-
-        context.drawImage(this.image,x,y,w,h);
-
-      }
-
-    }
-
-  };
-
-  this.rotate = function(x,y,angle) {
-    context.save();
-    context.translate(x,y);
-    context.rotate(angle * this.to_radians);
-    context.drawImage(this.image,-(this.image.width/2),-(this.image.height/2));
-    context.restore();
-
-  };
-
   this.jump = function() {
 
     this.can_jump = false;
@@ -154,14 +102,12 @@ function Sprite(filename, is_pattern, sprite_size,x,y) {
     if (guy.jumping_available) {
       guy.jumping_velocity = guy.jumpMax;
       guy_y -= guy.jumping_velocity;
-      //console.log(guy.jumping_velocity);
       if(guy.jumping_velocity <= 0) {
         guy.jumping_available = false;
         guy.jumpMax = 22;
       }
     }
     if (landed === true || (!can_go_down)) {
-      //console.log('landed');
       guy.jumpMax = 22;
       guy.jumping_available = true;
     }

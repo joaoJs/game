@@ -14,9 +14,6 @@ function check_if_wall(map) {
   var y = Math.floor((guy.pos_y+0.4)/64);
   var y_gravity = Math.floor((guy.pos_y+16)/64);
 
-  /*this.pos_x_in_map = Math.floor(this.pos_x / 32);
-  this.pos_y_in_map = Math.floor(this.pos_y / 32);*/
-
   // index of guy in map
   var index_right = xy2i(x,y_right,10);
   var index_right2 = xy2i(x,y,10);
@@ -29,7 +26,6 @@ function check_if_wall(map) {
   var index_gravity = xy2i(x,y_gravity,10);
   var index_gravity2 = xy2i(x_left,y_gravity,10);
 
-  //console.log(index);
   if ((map[index_right+1] === 0 || map[index_right2+1] === 0) || (map[index_right+1] === 5 || map[index_right2+1] === 5) && guy.pos_x_in_map !== 9) {
     can_go_right = false;
   } else {
@@ -79,6 +75,10 @@ function check_if_bird(x_next, y_next, map) {
             guy.lastCollision = now;
             bird_scream.play();
             guy.lives--;
+            if (guy.lives === 0) {
+              stop();
+              $('.gameOver').html('Game Over');
+            }
             $('.lives').html(guy.lives);
             setTimeout(function(){
               $('#canvas').toggleClass('active_damage');
@@ -91,14 +91,13 @@ function check_if_bird(x_next, y_next, map) {
 }
 
 function check_if_fireball(x_next, y_next, map) {
-  // if there are any birds in current map
-  //for each bird
+  // if there are any fireballs in current map
+  //for each fireball
     if (fireballs_per_map[map]) {
       fireballs_per_map[map].forEach(fireball => {
         var diff_x = Math.abs(x_next - fireball.pos_x);
         var diff_y = Math.abs(y_next - fireball.pos_y);
-        //console.log(diff_x, diff_y);
-        if (diff_x <= 30 && diff_y <= 30) {
+        if (diff_x <= 10 && diff_y <= 10) {
           console.log('touched fireball!');
           var now = Date.now();
           // wait half second for next collision
@@ -108,6 +107,10 @@ function check_if_fireball(x_next, y_next, map) {
             guy.lastCollision = now;
             fire.play();
             guy.lives--;
+            if (guy.lives === 0) {
+              $('.gameOver').html('Game Over');
+              stop();
+            }
             $('.lives').html(guy.lives);
             setTimeout(function(){
               $('#canvas').toggleClass('active_damage');
@@ -120,8 +123,8 @@ function check_if_fireball(x_next, y_next, map) {
 }
 
 function check_if_coin(x_next, y_next, map) {
-  // if there are any birds in current map
-  //for each bird
+  // if there are any coins in current map
+  //for each voin
     if (coins_per_map[map]) {
       coins_per_map[map].forEach(coin => {
         var diff_x = Math.abs(x_next - coin.pos_x);
@@ -159,8 +162,8 @@ function check_if_coin(x_next, y_next, map) {
 }
 
 function check_if_life(x_next, y_next, map) {
-  // if there are any birds in current map
-  //for each bird
+  // if there are any lives in current map
+  //for each life
     if (lives_per_map[map]) {
       lives_per_map[map].forEach(life => {
         var diff_x = Math.abs(x_next - life.pos_x);

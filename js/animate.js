@@ -5,7 +5,7 @@ function Animate(animationDelay, animationIndexCounter, animationCurrentFrame) {
 }
 
 var animationCounterIndex = 0;
-var animationCounter = []; //new Array();
+var animationCounter = []; 
 
 function initializeAnimationCounters() {
 
