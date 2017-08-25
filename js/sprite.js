@@ -19,7 +19,6 @@ function Sprite(filename, is_pattern, sprite_size,x,y) {
   this.jumping_velocity = 0;
   this.jumping_available = true;
   this.can_jump = true;
-  //this.jumping_velocity = 0;
 
   //properties for positions
   this.go_right = null;
@@ -57,9 +56,9 @@ function Sprite(filename, is_pattern, sprite_size,x,y) {
     console.log("unable to load sprite");
   }
 
-  this.drawOldVersion = function(x,y) {
+  /*this.drawOldVersion = function(x,y) {
     context.drawImage(this.image, x,y, block_w, block_h);
-  };
+  };*/
 
   this.draw = function(x,y,various) {
 

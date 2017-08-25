@@ -6,9 +6,7 @@ function updateTime() {
     console.log('end');
     $('.time').html('end');
   } else {
-
     time--;
-
     var minutes = Math.floor(time / 60);
     var seconds = time % 60;
     if (time === 0) {
@@ -17,19 +15,13 @@ function updateTime() {
       $('.gameOver').html("Game Over");
       stop();
     } else {
-
       if (seconds < 10) {
         seconds = "0" + seconds;
       }
-
       var display_time = minutes + ':' + seconds;
-
       $('.time').html(display_time);
-
     }
-
   }
-
 }
 
 function stop() {
@@ -37,6 +29,8 @@ function stop() {
   clearInterval(game_loop);
   clearInterval(timer);
   bach.pause();
+
+  game_over.play();
   time = 90;
 
 

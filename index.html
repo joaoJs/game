@@ -48,24 +48,28 @@
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
 
-    //audios
+    // ------------> audios
     var bird_scream = new Audio('./sounds/bird_scream.wav');
     var fire = new Audio('./sounds/fire.wav');
     var point_sounds = new Audio('./sounds/points.wav');
     var point_sounds2 = new Audio('./sounds/points.wav');
     var bach = new Audio('./sounds/bach.mp3');
     var richter = new Audio('./sounds/richter.mp3');
+    var game_over = new Audio('./sounds/game_over.wav')
 
 
+    // ---------------> background
     var back_brown = new Sprite('./images/back_brown.png',false);
     var back_brown_bottom = new Sprite('./images/back_brown_bottom.png',false);
     var stones = new Sprite('./images/stones.png',false);
     var yellow = new Sprite('./images/yellow.png',false);
 
-    //var guy = new Sprite('./images/guy.png');
+    // ---------------> main character
     var guy = new Sprite('./images/blueGuy.png',false,4);
 
-    //birds
+
+
+    //  --------------->  birds
     //map 0
     var bird = new Sprite('./images/bird.png',false,4,5*block_w,5*block_h);
     //map 1
@@ -98,7 +102,7 @@
     var bird15 = new Sprite('./images/bird.png',false,4,3*block_w,0*block_h);
 
 
-    //fireballs
+    // -------------> fireballs
     // map 1
     var fireball = new Sprite('./images/fireball.png',false,8,7*block_w,4*block_h);
 
@@ -121,7 +125,7 @@
     var fireball10 = new Sprite('./images/fireball.png',false,8,7*block_w,4*block_h);
 
 
-    // coins
+    // -----------------> coins
 
     //map 0
     var coin = new Sprite('./images/Coins2.png',false,8,9*block_w,2*block_h);
@@ -164,10 +168,10 @@
     var coin24 = new Sprite('./images/Coins2.png',false,8,9*block_w,2*block_h);
 
 
-    //var ring for life in map 4
+    // -----------> var ring for life in map 4
     var life = new Sprite('./images/rings.png',false,10,5*block_w,8*block_h);
 
-    //var birds_array = [bird];
+
 
     var birds_per_map = {
       0: [bird],
@@ -340,8 +344,6 @@
                           // border will change colors in last screen
 
                   if (Date.now() - time_now >= 400) {
-                        console.log(time_now)
-                        console.log("now!");
                         time_now = Date.now();
                         var col = generateRandomColor();
 
@@ -426,7 +428,7 @@
 
             if (currMap !== 9) {
               //variable to cancel stop button
-
+              //game_over.play();
               $('.gameOver').show();
               $('.gameOver').html('Game Over');
 
@@ -514,14 +516,8 @@
 
           guy.draw(guy_x,guy_y,spriteI);
 
-
         }, 24);
-
-
       }
-
-
-
     });
 
 
