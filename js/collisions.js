@@ -76,8 +76,11 @@ function check_if_bird(x_next, y_next, map) {
             bird_scream.play();
             guy.lives--;
             if (guy.lives === 0) {
-              stop();
+              //reset();
+              $('.gameOver').show();
               $('.gameOver').html('Game Over');
+              stop();
+
             }
             $('.lives').html(guy.lives);
             setTimeout(function(){
@@ -108,7 +111,9 @@ function check_if_fireball(x_next, y_next, map) {
             fire.play();
             guy.lives--;
             if (guy.lives === 0) {
+              $('.gameOver').show();
               $('.gameOver').html('Game Over');
+              //reset();
               stop();
             }
             $('.lives').html(guy.lives);

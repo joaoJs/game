@@ -17,17 +17,17 @@
 }
 
 @keyframes coins {
-    from {box-shadow: 0px 0px 150px rgba(255,255,100,.7);}
+    from {box-shadow: 0px 0px 750px rgba(255,255,50,.9);}
     to {box-shadow: 0px 0px 20px rgba(255,255,100,.7);}
 }
 
 @keyframes damage {
-    from {box-shadow: 0px 0px 150px rgba(255,100,150,.7);}
+    from {box-shadow: 0px 0px 750px rgba(255,100,150,.7);}
     to {box-shadow: 0px 0px 20px rgba(255,255,100,.7);}
 }
 
 @keyframes life {
-    from {box-shadow: 0px 0px 250px rgba(120,255,150,.8);}
+    from {box-shadow: 0px 0px 750px rgba(120,255,150,.8);}
     to {box-shadow: 0px 0px 20px rgba(255,255,100,.7);}
 }
 
@@ -38,7 +38,7 @@
 }
 
 .normal {
-  box-shadow: 0px 0px 20px rgba(255,255,100,.7);
+  box-shadow: 0px 0px 400px rgba(255,255,100,.7);
 }
 
 .active {
@@ -89,7 +89,7 @@
 }
 
 .gameOver {
-  font-family: 'Sedgwick Ave Display', cursive;
+  /*font-family: 'Sedgwick Ave Display', cursive;*/
   font-size: 80px;
   color: yellow;
   position: relative;
@@ -101,7 +101,8 @@
   font-size: 46px;
 }
 
-.opening {
+.opening,
+.closing {
   /*font-family: 'Sedgwick Ave', cursive;*/
   font-size: 80px;
   color: rgb(255,250,50);
@@ -109,7 +110,16 @@
   bottom: 500px;
 }
 
-.newGame {
+.newGame,
+.stop {
   background: rgba(56,12,120,1);
   border-radius: 50px;
+  box-shadow: 10px 10px 10px rgba(28,6,60,1);
+}
+
+.hide_stop {
+  color: rgba(0,0,0,0);
+  background: rgba(0,0,0,0);
+  box-shadow: 10px 10px 10px rgba(28,6,60,0);
+  border: 0px solid rgba(0,0,0,0);
 }

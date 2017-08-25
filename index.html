@@ -21,6 +21,7 @@
       <div class="points">0</div>
     </div>
     <div class="opening"><button class="newGame">New Game</button></div>
+    <div class="closing"><button class="stop">Stop</button></div>
     <div class="gameOver"></div>
   </div>
 
@@ -53,6 +54,7 @@
     var point_sounds = new Audio('./sounds/points.wav');
     var point_sounds2 = new Audio('./sounds/points.wav');
     var bach = new Audio('./sounds/bach.mp3');
+    var richter = new Audio('./sounds/richter.mp3');
 
 
     var back_brown = new Sprite('./images/back_brown.png',false);
@@ -209,9 +211,17 @@
     var timer = null;
 
     var currMap = null;
+    var time_now = null;
+
+    function generateRandomColor() {
+        return '#'+Math.floor(Math.random()*16777215).toString(16);
+    }
+
+
 
 
     $(document).ready(function() {
+
 
       //var ring for life in map 4
       var life = new Sprite('./images/rings.png',false,10,5*block_w,8*block_h);
@@ -227,22 +237,54 @@
 
       currMap = 0;
 
+
+        $('.closing').hide();
+
+
+
       $('.opening').click(function() {
+        $('.closing').hide();
 
-        bach.currentTime = 0;
-        bach.play();
 
-        $('.points').html(guy.points);
-        $('.lives').html(guy.lives);
-        $('.lives').removeClass('end');
-        $('.points').removeClass('end');
-        start_game();
-        $('.opening').hide();
+
+          $('.normal').css("box-shadow","0px 0px 400px rgba(255,255,100,.7)");
+
+          $('.opening').hide();
+
+          currMap = 0;
+
+          guy_x = 0;
+          guy_y = 256;
+
+          richter.pause();
+
+          bach.currentTime = 0;
+          bach.play();
+
+          $('.points').html(guy.points);
+          $('.lives').html(guy.lives);
+          $('.lives').removeClass('end');
+          $('.points').removeClass('end');
+          start_game();
+          $('.opening').hide();
+
+
 
       });
 
 
       function start_game() {
+
+        $('.closing').click(function() {
+          $('.closing').hide();
+          stop();
+        });
+
+        /*currMap = 0;
+        guy_x = 0;
+        guy_y = 256;*/
+
+        time_now = Date.now();
 
         timer = setInterval(function() {
             updateTime();
@@ -250,23 +292,90 @@
 
         game_loop = setInterval(function() {
 
-
-
           resetAnimationCounter();
 
           if(!landed) {
             guy_y += guy.gravity;
           }
 
+
+          // ------> in last map guy can go nowhere
+
+          // ----->> for testing last screen only!!
+
+          if (currMap === 0) {
+              if (guy.pos_x_in_map <= -2) {
+                guy_x = 128;
+                guy_y = 0
+                guy.points = 21;
+                currMap = 8;
+
+              }
+          }
+
+          if (currMap === 9) {
+
+                var rand_x = Math.floor(128 + Math.random() * 384);
+                var rand_y = Math.floor(Math.random() * 256);
+
+
+                        if (guy.pos_x_in_map <= -1) {
+                          guy_x = rand_x;
+                          guy_y = rand_y;
+                        }
+                        if (guy.pos_x_in_map >= 9) {
+                          guy_x = rand_x;
+                          guy_y = rand_y;
+                        }
+                        if (guy.pos_y_in_map >= 12) {
+                          guy_x = rand_x;
+                          guy_y = rand_y;
+                        }
+                        if (guy.pos_y_in_map <= -1) {
+                          guy_x = rand_x;
+                          guy_y = rand_y;
+                        }
+
+
+                          // border will change colors in last screen
+
+                  if (Date.now() - time_now >= 400) {
+                        console.log(time_now)
+                        console.log("now!");
+                        time_now = Date.now();
+                        var col = generateRandomColor();
+
+                        $(".normal").css("box-shadow", "0px 0px 1000px" + col);
+                  }
+
+                  $('.stop').removeClass('hide_stop');
+                  $('.stop').show();
+
+              setTimeout(function() {
+                $('.closing').show();
+                $('.stop').removeClass('hide_stop');
+                $('.stop').show();
+              },2000)
+
+              $('.closing').click(function() {
+                stop();
+              });
+
+          }
+
+
+
           if (guy.pos_x_in_map === 9 && currMap !== 8) {
+            if (currMap !== 9) {
               console.log('reached right corner');
               currMap++;
               guy_x = 0;
               guy_y -=10;
+            }
           }
           if (guy.pos_x_in_map <= -1 && currMap !== 0) {
+            if (currMap !== 9) {
               console.log('reached left corner');
-              //check for 570, guy_y
               var x_prev = Math.floor(570/64);
               var y_prev = Math.floor(guy.pos_y/64);
               var index_prev = xy2i(x_prev, y_prev,10);
@@ -278,32 +387,61 @@
                 guy_x = 570;
                 guy_y -=10;
               }
+            }
           }
           if (currMap === 8 && guy.pos_y_in_map <=-2) {
             if (guy.points >= 20) {
               console.log('here!');
               currMap++;
 
- // -----------> Play winning sound here
+
+
+
+ // -----------> Play winning sound here and stop bach
+ // -----------> time will stop.
+
+              bach.pause();
+              richter.currentTime = 0;
+
+              setTimeout(function() {
+                richter.play();
+                clearInterval(timer);
+              },100);
 
             } else {
               console.log('not enough poits');
             }
           }
-          if (currMap === 0 && guy.pos_x_in_map <= 0) {
+          /*if (currMap === 0 && guy.pos_x_in_map <= -2) {
+            console.log(guy.pos_x_in_map);
             if (key.leftArrow) {
-              guy_x = 0;
+              guy_x = 96;
+              guy_y -= 640;
             }
-          }
+          }*/
 
   // ------> check if guy falls and dies
 
           if (guy.pos_y_in_map >= 12) {
 
-            $('.gameOver').html('Game Over');
-            stop();
+            if (currMap !== 9) {
+              //variable to cancel stop button
+
+              $('.gameOver').show();
+              $('.gameOver').html('Game Over');
+
+
+              stop();
+
+
+            }
 
           }
+
+
+  // ----------> if in last map, guy can't fall or go anywhere
+
+
 
 
           drawMap(map[currMap]);
@@ -372,13 +510,13 @@
           setObstacles(currMap);
           setFireBalls(currMap);
           setCoins(currMap);
-          set_life(currMap)
-  ;
+          set_life(currMap);
 
           guy.draw(guy_x,guy_y,spriteI);
 
 
         }, 24);
+
 
       }
 

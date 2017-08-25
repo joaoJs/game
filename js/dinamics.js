@@ -13,6 +13,7 @@ function updateTime() {
     var seconds = time % 60;
     if (time === 0) {
       $('.time').html('end');
+      $('.gameOver').show();
       $('.gameOver').html("Game Over");
       stop();
     } else {
@@ -35,8 +36,10 @@ function stop() {
 
   clearInterval(game_loop);
   clearInterval(timer);
+  bach.pause();
   time = 90;
-  console.log(guy);
+
+
   $('.lives').addClass('end');
   $('.points').addClass('end');
   guy.lives = 5;
@@ -99,28 +102,29 @@ function stop() {
   coin19.pos_x = 5*block_w;
   coin19.pos_y = 2*block_w;
 
-  coin19.pos_x = 9*block_w;
-  coin19.pos_y = 1*block_w;
+  coin20.pos_x = 9*block_w;
+  coin20.pos_y = 1*block_w;
 
-  coin19.pos_x = 4*block_w;
-  coin19.pos_y = 0*block_w;
+  coin21.pos_x = 4*block_w;
+  coin21.pos_y = 0*block_w;
 
-  coin19.pos_x = 5*block_w;
-  coin19.pos_y = 3*block_w;
+  coin22.pos_x = 5*block_w;
+  coin22.pos_y = 3*block_w;
 
-  coin19.pos_x = 8*block_w;
-  coin19.pos_y = 2*block_w;
+  coin23.pos_x = 8*block_w;
+  coin23.pos_y = 2*block_w;
 
-  coin19.pos_x = 9*block_w;
-  coin19.pos_y = 2*block_w;
+  coin24.pos_x = 9*block_w;
+  coin24.pos_y = 2*block_w;
+
+
 
 
   life.pos_x = 5*block_w;
   life.pos_y = 8*block_w;
 
   setTimeout(function() {
-
-    bach.pause();
+    $('.stop').addClass('hide_stop');
     $('.opening').show();
     $('.gameOver').hide();
     currMap = 0;
